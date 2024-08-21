@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import Button from './Button';
 import { HiMenuAlt3 } from 'react-icons/hi'
 import { AiOutlineClose } from 'react-icons/ai'
@@ -8,20 +9,20 @@ const Navbar = () => {
     return (
         <header className='w-full fixed z-10 bg-black opacity-90'>
             <nav className='flex w-full py-2 md:py-3 px-4 md:px-20 items-center justify-between'>
-                <a href="/" className='flex items-center justify-center text-white text-lg cursor-pointer'>
+                <Link to="/" className='flex items-center justify-center text-white text-lg cursor-pointer'>
                     <img src={Logo} alt="Logo" className='hidden md:block w-8 h-8 lg:w-14 lg:h-14' />
                     Mis<span>Sabores</span>
-                </a>
+                </Link>
 
                 <ul className='hidden md:flex text-white gap-6'>
                     <li>
-                        <a href="/">Home</a>
+                        <Link to= "/">Home</Link>
                     </li>
                     <li>
-                        <a href="/recipes">Recetas</a>
+                        <Link to= "/recipes">Recetas</Link>
                     </li>
                     <li>
-                        <a href="/favorites">Favorites</a>
+                        <Link to="">Favoritos</Link>
                     </li>
                 </ul>
 
