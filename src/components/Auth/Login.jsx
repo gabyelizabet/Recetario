@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { useAuth } from "../../contexts/AuthContext";
+import { useRef, useState, useContext} from "react";
+import { AuthContext, useAuth } from "../../contexts/AuthContext";
 import { Photo1, Photo2, Photo3 } from "../../images";
 
 
@@ -12,6 +12,8 @@ function Login() {
     const [isLoading, setIsLoading] = useState(false);
 
     const { login } = useAuth("actions");
+    //const {actions} = useContext(AuthContext);
+    //console.log(login)
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -34,9 +36,11 @@ function Login() {
                     return response.json();
                 })
                 .then((responseData) => {
+                    //console.log(responseData)
                     login(responseData.token);
+                    //actions.login(responseData.token)
                     if (responseData.token) {
-                        fetch('https://sandbox.academiadevelopers.com/users/profiles/profile_data/',
+                        fetch(`https://sandbox.academiadevelopers.com/users/profiles/profile_data/`,
                             {
                                 method: "GET",
                                 headers: {
@@ -53,6 +57,7 @@ function Login() {
                                 return profileResponse.json();
                             })
                             .then((profileData) =>
+                                console.log(profileData),
                                 login(responseData.token, profileData.user__id)
                             )
                             .catch((error) => {

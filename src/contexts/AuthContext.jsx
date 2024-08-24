@@ -28,8 +28,8 @@ function reducer(state, action) {
             return state;
     }
 }
-
-function AuthProvider({ children }) {
+//children representa los elementos que estan anidados dentro de AuthProvider
+function AuthProvider({ children }) {//proveedor de contexto para la autenticacion, proporciona el estado de autenticacion y las funciones
     const [state, dispatch] = useReducer(reducer, {
         user__id: localStorage.getItem("user__id"),
         token: localStorage.getItem("authToken"),
@@ -37,6 +37,7 @@ function AuthProvider({ children }) {
     });
     const navigate = useNavigate();
     const location = useLocation();
+    //console.log(location)
 
     const actions = {
         login: (token, user__id) => {

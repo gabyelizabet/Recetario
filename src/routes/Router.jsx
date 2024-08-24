@@ -5,6 +5,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import RecipeDetail from "../pages/RecipeDetail";
 import RecipesPage from "../pages/RecipesPage";
 import Login from "../components/Auth/Login";
+//import Profile from "../pages/Profile";
 
 const Router = createBrowserRouter([
     {
