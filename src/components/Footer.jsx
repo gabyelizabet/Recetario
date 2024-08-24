@@ -2,11 +2,10 @@ import React from "react";
 import Button from "./Button";
 
 const Footer = () =>{
-    return (
-              
+    return (       
         <footer className="text-white py-5 bg_gradient ">
             <div className="container mx-auto px-20 lg:px-20 py-3 flex flex-col gap-10 md:flex-row justify-between border-t border-slate-800">
-                <div className="">
+                <div className="flex">
                     <p className="font-bold text-center">
                         <span className="text-green-500">MisSabores</span>
                     </p>
@@ -28,17 +27,17 @@ const Footer = () =>{
                     </div>
                 </div>
 
-                <div className="flex items-center">
+                
+            </div>
+        </footer>
+    )
+}
+ /* <div className="flex items-center">
                     <Button 
                         title='Ingresar'
                         btnType='button'
                         containerStyle='mt-10 md:block bg-transparent border border-white text-white hover:bg-white hover:text-black rounded-md min-w-[130px]'
                     />
-                </div>
-            </div>
-        </footer>
-    )
-}
-    
+                </div>*/   
 
 export default Footer

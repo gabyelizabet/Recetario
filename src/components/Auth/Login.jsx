@@ -1,6 +1,8 @@
-import {useRef, useState } from "react";
+import { useRef, useState, useContext} from "react";
+import { AuthContext, useAuth } from "../../contexts/AuthContext";
 import { Photo1, Photo2, Photo3 } from "../../images";
-import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate } from "react-router-dom";
+//import { useAuth } from '../../contexts/AuthContext';
 
 
 const images = [Photo1, Photo2, Photo3];
@@ -13,12 +15,15 @@ function Login() {
     const [isLoading, setIsLoading] = useState (false);
 
     const { login } = useAuth("actions");
-   
+    const navigate = useNavigate();
+    //const {actions} = useContext(AuthContext);
+    //console.log(login)
+
     function handleSubmit(event) {
         event.preventDefault ();
         if (!isLoading) {
             setIsLoading(true);
-            fetch(`${import.meta.env.VITE_API_URL}api-auth/`, {
+            fetch(`https://sandbox.academiadevelopers.com/api-auth/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -28,52 +33,55 @@ function Login() {
                     password: passwordRef.current.value,
                 }),
             })
-                .then((response) =>{
-                    if(!response.ok) {
-                        throw new Error ("No se pudo iniciar sesion");
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("No se pudo iniciar sesión");
                     }
                     return response.json();
                 })
                 .then((responseData) => {
+                    //console.log(responseData)
                     login(responseData.token);
+                    //actions.login(responseData.token)
                     if (responseData.token) {
-                        fetch(
-                            `${import.meta.env.VITE_API_URL}users/profiles/profile_data/`,
+                        console.log(responseData.token)
+                        fetch(`https://sandbox.academiadevelopers.com/users/profiles/profile_data/`,
                             {
                                 method: "GET",
                                 headers: {
                                     Authorization: `Token ${responseData.token}`,
                                 },
-                            }
+                        }
                         )
-                            .then((profielResponse) => {
-                                if (!profielResponse.ok) {
+                            .then((profileResponse) => {
+                                if (!profileResponse.ok) {
                                     throw new Error(
                                         "Error al obtener id de usuario"
                                     );
                                 }
-                                return profielResponse.json();
+                                return profileResponse.json();
                             })
-                            .then ((profileData) => 
-                            login(responseData.token, profileData.user__id)
-                            )
+                            .then((profileData) => {
+                                console.log(profileData),
+                                login(responseData.token, profileData.user__id)
+                                navigate('/profile');
+                            })
                             .catch((error) => {
                                 console.error(
                                     "Error al obtener id de usuario",
                                     error
                                 );
                                 setIsError(true);
-                            })
+                            });
                     }
                 })
-                .catch ((error) => {
+                .catch((error) => {
                     console.error("Error al iniciar sesión", error);
-                    setIsError (true);
+                    setIsError(true);
                 })
-                .finally(() =>{
+                .finally(() => {
                     setIsLoading(false);
                 });
-            
         }
     }
 

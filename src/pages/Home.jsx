@@ -8,15 +8,14 @@ const Home = ()=> {
             <Cabecera
                 title={
                   <p>
-                    MIS SABORES
+                    Mis Sabores
                   </p>
                 }
                 type='home'
             />
-
         </main>
-        
     )
 }
-
+/*Food Book
+                    <br /> My Flavors! */
 export default Home

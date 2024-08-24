@@ -5,12 +5,11 @@ import ProtectedRoute from "./ProtectedRoute";
 import RecipeDetail from "../pages/RecipeDetail";
 import RecipesPage from "../pages/RecipesPage";
 import Login from "../components/Auth/Login";
-import Profile from "../components/profile";
-
+import Profile from "../pages/Profile";
 
 const Router = createBrowserRouter([
     {
-        element: <Layout/>,
+        element: <div className="bg-black"><Layout /></div>,
         children: [
             {
                 index: true,
@@ -18,16 +17,11 @@ const Router = createBrowserRouter([
             },
             {
                 path: "recipes",
-                children: [
-                    {
-                        index: true,
-                        element: <RecipesPage/>,
-                    },
-                    {
-                        path: ":id",
-                        element: <RecipeDetail/>,
-                    }
-                ]
+                element: <RecipesPage/>
+            },
+            {
+                path: "recipes/recipe/:id",
+                element: <RecipeDetail/>
             },
             {
                 path: "login",

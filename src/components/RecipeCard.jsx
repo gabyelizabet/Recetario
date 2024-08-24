@@ -1,22 +1,37 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import hambur from '../images/hamburguesa.webp'
 
 const RecipeCard = ({ recipe }) => {
-    //a modificar una vez que tenga la relacion con la API
-    const defaultRecipe = {
-        image: 'https://via.placeholder.com/150',
-        label: 'Receta de Ejemplo',
-        cuisineType: 'Internacional',
-        dietLabel: 'Vegetariano',
-        mealType: 'Cena',
-        uri: 'https://example.com#123'
-    };  
-    
-    const { image, label, cuisineType, mealType, uri } = recipe?.recipe || defaultRecipe;
-    
-    const id = uri?.split("#")[1] || 'default-id';
-    
+    //const { image, label, cuisineType, dietLabel, mealType, uri } = recipe?.recipe
+
+    //const id = uri?.split("#")[1]
+
+    if (!recipe) {
+        console.log(recipe)
+        return null; // O muestra un mensaje de error o un componente de carga
+    }
+
+    //const { image, title, id } = recipe?.recipe
+    const { image, title, id } = recipe;
+    const imageUrl = image || hambur;
+    //const id = uri?.split("#")[1]
+    //console.log(id)
+
     return (
+        <Link to={`recipe/${id}`} className='w-full md:w-[220px]'>
+            <div className='bg-_gradient shadow w-full rounded-lg'>
+                <img src={imageUrl} alt={title} className='rounded-lg h-[200px] md:h-[150px] w-full' />
+
+                <div className='p-3'>
+                    <p className='text-white font-semibold'>{title}</p>
+                </div>
+            </div>
+        </Link>
+)
+}
+    
+    /*return (
         <Link to = {'/recipes/${id}'} className='w-full md:w-[220px]'>
             <div className='bg-_gradient shadow w-full rounded-lg'>
                 <img src={image} alt={label} className='rounded-lg h-[200px] md:h-[150px] w-full'/>
@@ -35,6 +50,6 @@ const RecipeCard = ({ recipe }) => {
             </div>
         </Link>
     )
-}
+}*/
 
 export default RecipeCard;

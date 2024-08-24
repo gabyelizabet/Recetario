@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams} from 'react-router-dom';
+import { fetchRecipe, fetchPasos, fetchIngredients, fetchCant_Uni } from '../hooks'
 import Loading from '../components/Loading';
 import Cabecera from '../components/Cabecera';
 import { AiFillPushpin } from "react-icons/ai";
@@ -7,83 +8,152 @@ import { BsPatchCheck } from "react-icons/bs";
 import RecipeCard from '../components/RecipeCard';
 import Button from '../components/Button';
 
-// Datos predefinidos para simular una receta y recetas recomendadas
-const exampleRecipe = {
-    image: 'https://via.placeholder.com/150',
-    label: 'Ensalada Vegana',
-    calories: 250,
-    totalTime: '30 mins',
-    yield: 4,
-    ingredientLines: [
-        'Lechuga',
-        'Tomate',
-        'Pepino',
-        'Zanahoria'
-    ],
-    healthLabels: ['Vegetariano', 'Sin gluten', 'Bajo en grasa']
-};
-
-const exampleRecommendedRecipes = [
-    {
-        recipe: {
-            image: 'https://via.placeholder.com/150',
-            label: 'Tacos de Frijol',
-            cuisineType: 'Mexicano',
-            dietLabel: 'Vegetariano',
-            mealType: 'Cena',
-            uri: 'https://example.com#2'
-        }
-    },
-    {
-        recipe: {
-            image: 'https://via.placeholder.com/150',
-            label: 'Pasta al Pesto',
-            cuisineType: 'Italiano',
-            dietLabel: 'Vegetariano',
-            mealType: 'Almuerzo',
-            uri: 'https://example.com#3'
-        }
-    },
-];
-
 const RecipeDetail = () => {
-    const [recipe, setRecipe] = useState(null);
-    const [recipes, setRecipes] = useState([]);
-    const [loading, setLoading] = useState(false);
-
-    const { id } = useParams();
-
+    const [recipe, setRecipe] = useState(null)
+    //const [recipes, setRecipes] = useState([])
+    const [pasos, setPasos] = useState([])
+    const [ingredientes, setIngredientes] = useState([])
+    const [loading, setLoading] = useState(false)
+  
+    const { id } = useParams()
+  
     const getRecipe = async (id) => {
-        try {
-            setLoading(true);
+      try {
+        setLoading(true)
+  
+        const data = await fetchRecipe(id)
+        //console.log(data)
+        const ingred= data.ingredients
+        //console.log(ingred)
+        setRecipe(data)
+  
+        const pas = await fetchPasos(id);
+        //console.log(pasos)
+        const pa = pas.map((receta)=> receta.instruction);
+        //console.log(pa)
+        setPasos(pa)
 
-            // Simula la obtención de la receta
-            setRecipe(exampleRecipe);
+        const cant = await fetchCant_Uni(id);
+        //console.log(cant)
+        const id_ingrediente = cant.map((canti)=>({id: canti.ingredient, quantify: canti.quantity, measure: canti.measure}));
+        console.log(id_ingrediente)
 
-            // Simula la obtención de recetas recomendadas
-            const recommend = exampleRecommendedRecipes;
-
-            setRecipes(recommend);
-
-            setLoading(false);
-        } catch (error) {
-            console.log(error);
-            setLoading(false);
-        }
-    };
-
+        const quanty = cant.map((canti)=> canti.measure);
+        console.log(quanty)
+  
+        const detailedIng = await Promise.all(ingred.map(async (name) => {
+          return await fetchIngredients(name);
+        }));
+        setIngredientes(detailedIng)
+        //const recommend = await fetchRecipes({ query: recipe?.label, limit: 5 })
+        //setRecipes(recommend)
+  
+        setLoading(false)
+  
+  
+      } catch (error) {
+        console.log(error)
+  
+        setLoading(false)
+      }
+    }
+  
     useEffect(() => {
-        getRecipe(id);
-    }, [id]);
-
+      getRecipe(id)
+    }, [id])
+  
+  
     if (loading) {
-        return (
-            <div className='w-full h-[100vh] flex items-center justify-center'>
-                <Loading />
-            </div>
-        );
+      return (
+        <div className='w-full h-[100vh] flex items-center justify-center'>
+          <Loading />
+        </div>
+      );
     }
 
+    return (
+        <div className='w-full'>
+          <Cabecera
+            title={recipe?.title} image={recipe?.image} description={recipe?.description} view_count={recipe?.view_count}
+          />
+    
+          <div className='w-full px-4 lg:px-20 pt-5'>
+    
+            <div className='flex gap-10 items-center justify-center px-4'>
+              <div className='flex flex-col justify-between'>
+                <span className='text-white text-center border border-gray-500 py-1.5 px-2 rounded-full mb-2'>{recipe?.cooking_time.toFixed(0)} </span>
+    
+                <p className='text-neutral-100 text-[12px] md:text-md'>TIEMPO DE COCCIÓN</p>
+              </div>
+    
+              <div className='flex flex-col justify-center'>
+                <span className='text-white text-center border border-gray-500 py-1.5 rounded-full mb-2'>
+                  {recipe?.preparation_time}
+                </span>
+                <p className='text-neutral-100 text-[12px] md:text-md'>
+                  TIEMPO DE PREPARACIÓN
+                </p>
+              </div>
+    
+              <div className='flex flex-col justify-center'>
+                <span className='text-white text-center border border-gray-500 py-1.5 rounded-full mb-2'>
+                  {recipe?.servings}
+                </span>
+                <p className='text-neutral-100 text-[12px] md:text-md'>PORCIONES</p>
+              </div>
+    
+    
+            </div>
+    
+            <div className='w-full flex flex-col md:flex-row gap-8 py-20 pxx-4 md:px-10'>
+              {/* LEFT SIDE */}
+              <div className='w-full md:w-2/4 md:border-r border-slate-800 pr-1'>
+                <div className='flex flex-col gap-5'>
+                  <p className='text-green-500 text-2xl underline'>Ingredientes</p>
+    
+                  {
+                    ingredientes?.map((ingredient, index) => {
+                      return (
+                        <p key={index} className='text-neutral-100 flex gap-2'>
+                          <AiFillPushpin className='text-green-800 text-xl' /> {ingredient}
+                        </p>
+                      )
+                    })
+                  }
+                </div>
+    
+                
+              </div>
+              <div className='w-full md:w-2/4 2xl:pl-10 mt-20 md:mt-0'>
+                <p className='text-green-700 text-2xl underline'>Pasos</p>
+                {
+                 pasos?.map((item, index) => (
+                  <p className='text-white flex gap-2 bg-[#fff5f518] px-4 py-1 rounded-full ' key={index}>
+                    <BsPatchCheck color='green' /> {item}
+                  </p>
+                ))
+                }
+              </div>
+                 
+            </div>
+          </div>
+        </div>
+      )
+    }
+    /*<div className='flex flex-col gap-3 mt-20'>
+                  <p className='text-green-700 text-2xl underline'>Pass</p>
+    
+                  <div className='flex flex-wrap gap-4'>
+                    {
+                      pasos?.map((item, index) => (
+                        <p className='text-white flex gap-2 bg-[#fff5f518] px-4 py-1 rounded-full ' key={index}>
+                          <BsPatchCheck color='green' /> {item}
+                        </p>
+                      ))
+                    }
+    
+                  </div>
+                </div>
     return (
         <div className='w-full'>
             <Cabecera title={recipe?.label} image={recipe?.image} />
@@ -112,9 +182,9 @@ const RecipeDetail = () => {
                     </div>
                 </div>
 
-                <div className='w-full flex flex-col md:flex-row gap-8 py-20 pxx-4 md:px-10'>
+                <div className='w-full flex flex-col md:flex-row gap-8 py-20 pxx-4 md:px-10'>*/
                     {/* LEFT SIDE */}
-                    <div className='w-full md:w-2/4 md:border-r border-slate-800 pr-1'>
+                    /*<div className='w-full md:w-2/4 md:border-r border-slate-800 pr-1'>
                         <div className='flex flex-col gap-5'>
                             <p className='text-green-500 text-2xl underline'>Ingredients</p>
                             {recipe?.ingredientLines?.map((ingredient, index) => (
@@ -134,10 +204,10 @@ const RecipeDetail = () => {
                                 ))}
                             </div>
                         </div>
-                    </div>
+                    </div>*/
 
                     {/* RIGHT SIDE */}
-                    <div className='w-full md:w-2/4 2xl:pl-10 mt-20 md:mt-0'>
+                    /*<div className='w-full md:w-2/4 2xl:pl-10 mt-20 md:mt-0'>
                         {recipes?.length > 0 && (
                             <>
                                 <p className='text-white text-2xl'>Also Try This</p>
@@ -159,6 +229,6 @@ const RecipeDetail = () => {
             </div>
         </div>
     );
-};
+};*/
 
 export default RecipeDetail;
