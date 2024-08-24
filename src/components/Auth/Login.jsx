@@ -40,6 +40,7 @@ function Login() {
                     login(responseData.token);
                     //actions.login(responseData.token)
                     if (responseData.token) {
+                        console.log(responseData.token)
                         fetch(`https://sandbox.academiadevelopers.com/users/profiles/profile_data/`,
                             {
                                 method: "GET",
