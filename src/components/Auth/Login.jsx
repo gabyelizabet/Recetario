@@ -1,6 +1,6 @@
 import {useRef, useState } from "react";
 import { Photo1, Photo2, Photo3 } from "../../images";
-import {useAuth} from "../../contexts/AuthContext";
+import { useAuth } from '../../contexts/AuthContext';
 
 
 const images = [Photo1, Photo2, Photo3];
@@ -10,17 +10,15 @@ function Login() {
     const usernameRef = useRef("");
     const passwordRef = useRef("");
     const [isError, setIsError] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState (false);
 
-    const  {login}  = useAuth ("actions");
-    console.log("Login called with:");//eliminar
+    const { login } = useAuth("actions");
    
     function handleSubmit(event) {
         event.preventDefault ();
-        console.log("Handling submit");//eliminar
         if (!isLoading) {
             setIsLoading(true);
-            fetch (`${import.meta.env.VITE_API_URL}api-auth/`,{ 
+            fetch(`${import.meta.env.VITE_API_URL}api-auth/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -30,34 +28,34 @@ function Login() {
                     password: passwordRef.current.value,
                 }),
             })
-                .then(response =>{
-                    if (!response.ok) {
-                        throw new Error ("No se pudo iniciar seseión");
+                .then((response) =>{
+                    if(!response.ok) {
+                        throw new Error ("No se pudo iniciar sesion");
                     }
                     return response.json();
                 })
                 .then((responseData) => {
-                  login(responseData.token);
+                    login(responseData.token);
                     if (responseData.token) {
                         fetch(
-                            `${import.meta.env.VITE_API_URL}users/profiles_data/`,
+                            `${import.meta.env.VITE_API_URL}users/profiles/profile_data/`,
                             {
                                 method: "GET",
                                 headers: {
                                     Authorization: `Token ${responseData.token}`,
                                 },
-                            }  
+                            }
                         )
-                            .then (profileResponse => {
-                                if (!profileResponse.ok) {
-                                    throw new Error (
-                                        "Error al obtener id del usuario"
+                            .then((profielResponse) => {
+                                if (!profielResponse.ok) {
+                                    throw new Error(
+                                        "Error al obtener id de usuario"
                                     );
                                 }
-                                return profileResponse.json();
+                                return profielResponse.json();
                             })
-                            .then (profileData =>
-                                login(responseData.token, profileData.user__id)
+                            .then ((profileData) => 
+                            login(responseData.token, profileData.user__id)
                             )
                             .catch((error) => {
                                 console.error(
@@ -65,16 +63,17 @@ function Login() {
                                     error
                                 );
                                 setIsError(true);
-                            });
+                            })
                     }
                 })
-                .catch(error => {
-                    console.error ("Error al iniciar sesión", error);
-                    setIsError(true);
+                .catch ((error) => {
+                    console.error("Error al iniciar sesión", error);
+                    setIsError (true);
                 })
-                .finally(() => {
+                .finally(() =>{
                     setIsLoading(false);
                 });
+            
         }
     }
 
