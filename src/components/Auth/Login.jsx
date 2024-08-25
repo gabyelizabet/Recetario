@@ -39,6 +39,7 @@ function Login() {
                     //console.log(responseData)
                     login(responseData.token);
                     //actions.login(responseData.token)
+                    console.log(responseData.token)
                     if (responseData.token) {
                         console.log(responseData.token)
                         fetch(`https://sandbox.academiadevelopers.com/users/profiles/profile_data/`,
@@ -57,10 +58,10 @@ function Login() {
                                 }
                                 return profileResponse.json();
                             })
-                            .then((profileData) =>
-                                console.log(profileData),
+                            .then((profileData) =>{
+                                console.log(profileData)
                                 login(responseData.token, profileData.user__id)
-                            )
+                            })
                             .catch((error) => {
                                 console.error(
                                     "Error al obtener id de usuario",
