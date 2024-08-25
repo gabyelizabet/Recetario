@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import useFetch from "../hooks/useFetch";
-import ProfileImageModal from "./ProfileImageModal";
+import ProfileImageModal from "../components/ProfileImageModal";
 
 function Profile() {
     const { token } = useAuth("state");
@@ -239,18 +239,18 @@ function Profile() {
                                         onClick={() => setIsEditingState(true)}
                                     >
                                         <img
-                                            src={`${
+                                            /*src={`${
                                                 import.meta.env
-                                                    .VITE_API_BASE_URL
+                                                    .VITE_API_URL
                                             }${userData.state.icon}`}
-                                            alt="State icon"
+                                            alt="State icon"*/
                                             style={{
                                                 height: "20px",
                                                 marginRight: "5px",
                                                 borderRadius: "50%",
                                             }}
                                         />
-                                        {userData.state.name}
+                                        {/*userData.state.name*/}
                                     </div>
                                 )}
                             </div>

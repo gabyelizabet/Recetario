@@ -1,22 +1,26 @@
 import { useRef, useState, useContext} from "react";
 import { AuthContext, useAuth } from "../../contexts/AuthContext";
 import { Photo1, Photo2, Photo3 } from "../../images";
+import { useNavigate } from "react-router-dom";
+//import { useAuth } from '../../contexts/AuthContext';
 
 
 const images = [Photo1, Photo2, Photo3];
+
 
 function Login() {
     const usernameRef = useRef("");
     const passwordRef = useRef("");
     const [isError, setIsError] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState (false);
 
     const { login } = useAuth("actions");
+    const navigate = useNavigate();
     //const {actions} = useContext(AuthContext);
     //console.log(login)
 
     function handleSubmit(event) {
-        event.preventDefault();
+        event.preventDefault ();
         if (!isLoading) {
             setIsLoading(true);
             fetch(`https://sandbox.academiadevelopers.com/api-auth/`, {
@@ -58,9 +62,16 @@ function Login() {
                                 }
                                 return profileResponse.json();
                             })
+<<<<<<< HEAD
                             .then((profileData) =>{
                                 console.log(profileData)
                                 login(responseData.token, profileData.user__id)
+=======
+                            .then((profileData) => {
+                                console.log(profileData),
+                                login(responseData.token, profileData.user__id)
+                                navigate('/profile');
+>>>>>>> 421fb2d5e454e368c15c45357c67d76c040384c9
                             })
                             .catch((error) => {
                                 console.error(
@@ -72,7 +83,7 @@ function Login() {
                     }
                 })
                 .catch((error) => {
-                    console.error("Error error al iniciar sesión", error);
+                    console.error("Error al iniciar sesión", error);
                     setIsError(true);
                 })
                 .finally(() => {
