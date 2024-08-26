@@ -1,5 +1,5 @@
-//import { useAuth } from '../contexts/AuthContext';
-import React, { useState } from 'react'
+import { useAuth } from "../contexts/AuthContext";
+import React, { useState, useContext } from 'react'
 import Logo from '../images/logo.png'
 import { HiMenuAlt3 } from 'react-icons/hi'
 import { AiOutlineClose } from 'react-icons/ai'
@@ -9,7 +9,9 @@ import { Link, useNavigate } from 'react-router-dom';
 const Navbar = () => {
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
-    const isRegistered = false;
+    const { isAuthenticated } = useAuth("state");
+    console.log(isAuthenticated)
+    const isRegistered = isAuthenticated;
     const [warning, setWarning ] = useState (false); 
     
     const handleProfileClick =() => {
@@ -17,6 +19,13 @@ const Navbar = () => {
             setWarning(true);
         } else {
             navigate('/profile');
+        }
+    };
+    const handleAddClick =() => {
+        if (!isRegistered) {
+            setWarning(true);
+        } else {
+            navigate('/add');
         }
     };
 
@@ -45,7 +54,9 @@ const Navbar = () => {
                     <li>
                         <Link to= "/recipes">Recetas</Link>
                     </li>
-                    
+                    <li>
+                        <button onClick={handleAddClick}>Agregar Receta</button>
+                    </li> 
                 </ul>
 
                 <Button
@@ -61,16 +72,16 @@ const Navbar = () => {
                 </button> 
 
                 {warning && (
-                <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50">
-                    <div className="bg-gray-900 text-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+                <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-80 z-50">
+                    <div className=" bg-black opacity-90 text-white p-6 rounded-lg shadow-lg max-w-sm w-full">
                             <h2 className="text-lg font-semibold mb-4">No estás logueado</h2>
-                            <p className="mb-4">Debes iniciar sesión para acceder a esta página.</p>
+                            <p className="mb-4">Debes iniciar sesión para acceder.</p>
                             <div className="flex justify-end space-x-4">
                                 <button
                                     className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none"
                                     onClick={handleLoginRedirect}
                                 >
-                                    Ir a Login
+                                    Iniciar Sesión
                                 </button>
                                 <button
                                     className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 focus:outline-none"
@@ -86,7 +97,5 @@ const Navbar = () => {
         </header>
     )
 }
-/*<li>
-                        <a href="/favorites">Favorites</a>
-                    </li> */
+/**/
 export default Navbar

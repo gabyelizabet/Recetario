@@ -6,6 +6,7 @@ import RecipeDetail from "../pages/RecipeDetail";
 import RecipesPage from "../pages/RecipesPage";
 import Login from "../components/Auth/Login";
 import Profile from "../pages/Profile";
+import AddRecipe from "../pages/AddRecipe";
 
 const Router = createBrowserRouter([
     {
@@ -26,6 +27,14 @@ const Router = createBrowserRouter([
             {
                 path: "login",
                 element: <Login/>
+            },
+            {
+                path: "/add",
+                element: (
+                    <ProtectedRoute>
+                        <AddRecipe/>
+                    </ProtectedRoute>                    
+                ),
             },
             {
                 path: "profile",

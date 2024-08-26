@@ -7,11 +7,13 @@ import { AuthProvider } from "../contexts/AuthContext";
 export default function Layout(){
     return (
         <>
-        <Navbar/>
-            <AuthProvider>
+        <AuthProvider>
+            <Navbar/>
+            
                 <Outlet/>
-            </AuthProvider>
+        </AuthProvider>
         <Footer/>
+
         </>
     )
 }
