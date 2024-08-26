@@ -19,8 +19,8 @@ const RecipeCard = ({ recipe }) => {
     //console.log(id)
 
     return (
-        <Link to={`recipe/${id}`} className='w-full md:w-[220px]'>
-            <div className='bg-_gradient shadow w-full rounded-lg'>
+        <Link to={`recipe/${id}`} className='w-full md:w-[220px] pt-40'>
+            <div className='bg-_gradient shadow w-full rounded-lg '>
                 <img src={imageUrl} alt={title} className='rounded-lg h-[200px] md:h-[150px] w-full' />
 
                 <div className='p-3'>
