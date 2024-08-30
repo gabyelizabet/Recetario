@@ -1,6 +1,6 @@
 import { useAuth } from "../contexts/AuthContext";
 import React, { useState, useContext } from 'react'
-import Logo from '../images/logo.png'
+import Logo from '../images/Logo.png'
 import { HiMenuAlt3 } from 'react-icons/hi'
 import { AiOutlineClose } from 'react-icons/ai'
 import Button from './Button'
