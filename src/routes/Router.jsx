@@ -7,6 +7,7 @@ import RecipesPage from "../pages/RecipesPage";
 import Login from "../components/Auth/Login";
 import Profile from "../pages/Profile";
 import AddRecipe from "../pages/AddRecipe";
+import ModificarReceta from "../pages/ModificarReceta";
 
 const Router = createBrowserRouter([
     {
@@ -33,6 +34,14 @@ const Router = createBrowserRouter([
                 element: (
                     <ProtectedRoute>
                         <AddRecipe/>
+                    </ProtectedRoute>                    
+                ),
+            },
+            {
+                path: "/modificar/:idRecipe",
+                element: (
+                    <ProtectedRoute>
+                        <ModificarReceta/>
                     </ProtectedRoute>                    
                 ),
             },

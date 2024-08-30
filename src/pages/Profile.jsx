@@ -10,8 +10,8 @@ const images = [Photo1, Photo2, Photo3, Photo4, Photo5, Photo6];
 
 function Profile() {
     const { token } = useAuth("state");
-    const { isAuthenticated } = useAuth("state");
-    console.log(isAuthenticated)
+    //const { isAuthenticated } = useAuth("state");
+    //console.log(isAuthenticated)
 
     const [editMode, setEditMode] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
