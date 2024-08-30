@@ -132,14 +132,14 @@ const Recipes = () => {
                             }
                         </div>
 
-                        {/*<div className='flex w-full items-center justify-center py-10'>
+                        <div className='flex w-full items-center justify-center py-10'>
 
                             <Button
                                 title="Show More"
                                 containerStyle="bg-green-800 text-white px-3 py-1 rounded-full text-sm"
                                 handleClick={showMore}
                             />
-                        </div>*/}
+                        </div>
                     </>
                 ) : <div className='text-white w-full items-center justify-center py-10'>
                     <p className='text-center'>No Recipe Found</p>
